@@ -1,6 +1,6 @@
 package com.david.spring7restmvc.controller;
 
-import com.david.spring7restmvc.model.Customer;
+import com.david.spring7restmvc.model.CustomerDTO;
 import com.david.spring7restmvc.services.CustomerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PatchMapping(CUSTOMER_PATH_ID)
-    public ResponseEntity updateBeerPatchById(@PathVariable("id") UUID customerId, @RequestBody Customer customer) {
+    public ResponseEntity updateBeerPatchById(@PathVariable("id") UUID customerId, @RequestBody CustomerDTO customer) {
 
         customerService.patchCustomerById(customerId, customer);
 
@@ -39,7 +39,7 @@ public class CustomerController {
 
 
     @PutMapping(CUSTOMER_PATH_ID)
-    public ResponseEntity updateById(@PathVariable("id") UUID customerId, @RequestBody Customer customer) {
+    public ResponseEntity updateById(@PathVariable("id") UUID customerId, @RequestBody CustomerDTO customer) {
 
         customerService.updateById(customerId, customer);
 
@@ -48,9 +48,9 @@ public class CustomerController {
 
 
     @PostMapping(value = CUSTOMER_PATH)
-    public ResponseEntity handlePost(@RequestBody Customer customer) {
+    public ResponseEntity handlePost(@RequestBody CustomerDTO customer) {
 
-        Customer savedCustomer = customerService.saveNewCustomer(customer);
+        CustomerDTO savedCustomer = customerService.saveNewCustomer(customer);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", CUSTOMER_PATH + "/" + savedCustomer.getId().toString());
@@ -60,12 +60,12 @@ public class CustomerController {
 
 
     @GetMapping(value = CUSTOMER_PATH)
-    public List<Customer> listCustomer() {
+    public List<CustomerDTO> listCustomer() {
         return customerService.listCustomers();
     }
 
     @GetMapping(value = CUSTOMER_PATH_ID)
-    public Customer getCustomerById(@PathVariable("id") UUID customerId) {
+    public CustomerDTO getCustomerById(@PathVariable("id") UUID customerId) {
 
         return customerService.getCustomerById(customerId).orElseThrow(NotFoundException::new);
     }
